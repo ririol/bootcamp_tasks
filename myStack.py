@@ -3,29 +3,29 @@ from queue import Queue
 class MyStack:
 
     def __init__(self):
-        self.q1 = deque()
-        self.q2 = deque()
+        self.q1 = Queue()
+        self.q2 = Queue()
 
     def push(self, x: int) -> None:
-        self.q1.append(x)
+        self.q1.put(x)
 
     def pop(self) -> int:
-        for item in range(len(self.q1) - 1):
-            self.q2.append(self.q1.popleft())
-        pop_element = self.q1.pop()
+        for item in range(self.q1.qsize() - 1):
+            self.q2.put(self.q1.get())
+        pop_element = self.q1.get()
         self.q1, self.q2 = self.q2, self.q1
         return pop_element
 
     def top(self) -> int:
-        for item in range(len(self.q1) - 1):
-            self.q2.append(self.q1.popleft())
-        top_element = self.q1.pop()
-        self.q2.append(top_element)
+        for item in range(self.q1.qsize() - 1):
+            self.q2.put(self.q1.get())
+        top_element = self.q1.get()
+        self.q2.put(top_element)
         self.q1, self.q2 = self.q2, self.q1
         return top_element
 
     def empty(self) -> bool:
-        return False if len(self.q1) else True
+        return False if self.q1.qsize() else True
 
 
 # Your MyStack object will be instantiated and called as such:
